@@ -67,6 +67,11 @@
 			var framerate = dwRate/dwScale;
 			var duration = Math.ceil((framerate * dwLength)/1000);
 
+			console.log('dwScale: ' + dwScale);
+			console.log('dwRate: ' + dwRate);
+			console.log('dwLength: ' + dwLength);
+			console.log('framerate: ' + framerate);
+
 			return duration;
 		}
 
