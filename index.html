@@ -78,6 +78,17 @@
 			return duration;
 		}
 
+		function getDuration2(bstring) {
+			var hex = bin2hex(bstring);
+			var framerate_ms = hex.substring(64, 72);
+			var total_frames = hex.substring(96, 104);
+
+			framerate = hexdec(str_split(framerate_ms, 2).reverse().join(''))/1000000;
+			total_frames = hexdec(str_split(total_frames, 2).reverse().join(''));
+
+			return Math.ceil(framerate * total_frames);
+		}
+
 		$(document).ready(function() {
 			var $dropbox = $('.dropbox');
 			var f_duration = 0;
@@ -93,7 +104,7 @@
 				fileReader.onload = function() {
 					var bstring = this.result;
 
-					$('#size').html(getDuration(bstring) + ' seconds');
+					$('#size').html(getDuration2(bstring) + ' seconds');
 				}
 
 				fileReader.readAsBinaryString(dropped_files[0]);
