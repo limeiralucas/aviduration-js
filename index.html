@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+		.dropbox {
+			height: 300px;
+			width: 300px;
+			background-color: black;
+		}
+	</style>
+</head>
+<body>
+	<div class="dropbox"></div>
+	<span id="size"></span>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		function bin2hex(s) {
+			var i, l, o = "", n;
+
+			s += "";
+
+			for (i = 0, l = s.length; i < l; i++) {
+				n = s.charCodeAt(i).toString(16).toUpperCase();
+				o += n.length < 2 ? "0" + n : n;
+			}
+
+			return o;
+		}
+
+		function hexdec(hexString) {
+			return parseInt(hexString, 16);
+		}
+
+		function str_split(string, splitLength) {
+			if (splitLength === null) {
+				splitLength = 1
+			}
+			if (string === null || splitLength < 1) {
+				return false
+			}
+			string += ''
+			var chunks = []
+			var pos = 0
+			var len = string.length
+			while (pos < len) {
+				chunks.push(string.slice(pos, pos += splitLength))
+			}
+			return chunks
+		}
+
+		function getDuration(bstring) {
+			var hex = bin2hex(bstring);
+			hex = hex.split('73747268')[1];
+			hex = hex.substring(0, 120);
+			hex = str_split(hex, 8);
+
+			var dwScale = str_split(hex[6], 2).reverse().join('');
+			var dwRate = str_split(hex[7], 2).reverse().join('');
+			var dwLength = str_split(hex[9], 2).reverse().join('');
+
+			dwScale = hexdec(dwScale);
+			dwRate = hexdec(dwRate);
+			dwLength = hexdec(dwLength);
+
+			var framerate = dwRate/dwScale;
+			var duration = Math.ceil((framerate * dwLength)/1000);
+
+			return duration;
+		}
+
+		$(document).ready(function() {
+			var $dropbox = $('.dropbox');
+			var f_duration = 0;
+
+			$dropbox.on('drag dragstart dragen dragover dragenter dragleave drop', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+			})
+			.on('drop', function(e) {
+				var dropped_files = e.originalEvent.dataTransfer.files;
+
+				var fileReader = new FileReader();
+				fileReader.onload = function() {
+					var bstring = this.result;
+
+					$('#size').html(getDuration(bstring) + ' seconds');
+				}
+
+				fileReader.readAsBinaryString(dropped_files[0]);
+			});
+		});
+	</script>
+</body>
+</html>
