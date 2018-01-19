@@ -58,10 +58,12 @@
 
 			var dwScale = str_split(hex[6], 2).reverse().join('');
 			var dwRate = str_split(hex[7], 2).reverse().join('');
+			var dwStart = str_split(hex[8], 2).reverse().join('');
 			var dwLength = str_split(hex[9], 2).reverse().join('');
 
 			dwScale = hexdec(dwScale);
 			dwRate = hexdec(dwRate);
+			dwStart = hexdec(dwStart);
 			dwLength = hexdec(dwLength);
 
 			var framerate = dwRate/dwScale;
@@ -69,6 +71,7 @@
 
 			console.log('dwScale: ' + dwScale);
 			console.log('dwRate: ' + dwRate);
+			console.log('dwStart: ' + dwStart);
 			console.log('dwLength: ' + dwLength);
 			console.log('framerate: ' + framerate);
 
