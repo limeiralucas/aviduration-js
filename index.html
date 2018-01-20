@@ -100,7 +100,7 @@
 				fileReader.onload = function() {
 					var bstring = this.result;
 
-					$('#duration').html(getDuration2(bstring));
+					$('#duration').html(getDuration(bstring));
 				}
 
 				fileReader.readAsBinaryString(dropped_files[0]);
