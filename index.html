@@ -60,14 +60,24 @@
 		}
 
 		$(document).ready(function() {
-			var $dropbox = $('.dropbox');
+			var $dropbox = document.querySelector('.dropbox');
 			var f_duration = 0;
 
-			$dropbox.on('drag dragstart dragen dragover dragenter dragleave drop', function(e) {
+			function preventDefault(e) {
 				e.preventDefault();
 				e.stopPropagation();
-			})
-			.on('drop', function(e) {
+			}
+
+			$dropbox.addEventListener('drag', preventDefault)
+			$dropbox.addEventListener('dragstart', preventDefault)
+			$dropbox.addEventListener('dragend', preventDefault)
+			$dropbox.addEventListener('dragover', preventDefault)
+			$dropbox.addEventListener('dragenter', preventDefault)
+			$dropbox.addEventListener('dragleave', preventDefault)
+			$dropbox.addEventListener('drop', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
 				var dropped_files = e.originalEvent.dataTransfer.files;
 
 				if(dropped_files[0].type == 'video/avi' || dropped_files[0].type == 'video/x-msvideo') {
@@ -75,7 +85,7 @@
 					fileReader.onload = function() {
 						var bstring = this.result;
 
-						$('#duration').html(getDuration(bstring) + ' seconds');
+						document.querySelector('#duration').innerHTML = getDuration(bstring) + ' seconds';
 					}
 
 					fileReader.readAsBinaryString(dropped_files[0]);
@@ -84,7 +94,7 @@
 					var el = document.createElement('video');
 					var URL = window.URL || window.webkitURL;
 					el.addEventListener('loadeddata', () => {
-						$('#duration').html(el.duration + ' seconds');
+						document.querySelector('#duration').innerHTML = el.duration + ' seconds';
 					});
 					el.src = URL.createObjectURL(dropped_files[0]);
 				}
