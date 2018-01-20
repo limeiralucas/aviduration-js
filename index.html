@@ -50,34 +50,6 @@
 			return chunks
 		}
 
-		// function getDuration(bstring) {
-		// 	var hex = bin2hex(bstring);
-		// 	hex = hex.split('73747268')[1];
-		// 	hex = hex.substring(0, 120);
-		// 	hex = str_split(hex, 8);
-
-		// 	var dwScale = str_split(hex[6], 2).reverse().join('');
-		// 	var dwRate = str_split(hex[7], 2).reverse().join('');
-		// 	var dwStart = str_split(hex[8], 2).reverse().join('');
-		// 	var dwLength = str_split(hex[9], 2).reverse().join('');
-
-		// 	dwScale = hexdec(dwScale);
-		// 	dwRate = hexdec(dwRate);
-		// 	dwStart = hexdec(dwStart);
-		// 	dwLength = hexdec(dwLength);
-
-		// 	var framerate = dwRate/dwScale;
-		// 	var duration = Math.ceil((framerate * dwLength)/1000);
-
-		// 	console.log('dwScale: ' + dwScale);
-		// 	console.log('dwRate: ' + dwRate);
-		// 	console.log('dwStart: ' + dwStart);
-		// 	console.log('dwLength: ' + dwLength);
-		// 	console.log('framerate: ' + framerate);
-
-		// 	return duration;
-		// }
-
 		function getDuration(bstring) {
 			var framerate = hexdec(str_split(bin2hex(bstring.substring(32, 36)), 2).reverse().join(''))/1000000;
 			var frames = hexdec(str_split(bin2hex(bstring.substring(48, 52)), 2).reverse().join(''));
