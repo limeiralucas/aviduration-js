@@ -96,7 +96,7 @@
 			.on('drop', function(e) {
 				var dropped_files = e.originalEvent.dataTransfer.files;
 
-				if(dropped_files[0].type == 'video/avi') {
+				if(dropped_files[0].type == 'video/avi' || dropped_files[0].type == 'video/x-msvideo') {
 					var fileReader = new FileReader();
 					fileReader.onload = function() {
 						var bstring = this.result;
@@ -105,6 +105,14 @@
 					}
 
 					fileReader.readAsBinaryString(dropped_files[0]);
+				} else {
+					console.log(dropped_files[0].type);
+					var el = document.createElement('video');
+					var URL = window.URL || window.webkitURL;
+					el.addEventListener('loadeddata', () => {
+						$('#duration').html(el.duration + ' seconds');
+					});
+					el.src = URL.createObjectURL(dropped_files[0]);
 				}
 			});
 		});
