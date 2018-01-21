@@ -31,8 +31,8 @@
 			return o;
 		}
 
-		function hexdec(hexString) {
-			return parseInt(hexString, 16);
+		function bindec(bstring) {
+			return parseInt(bstring, 2);
 		}
 
 		function str_split(string, splitLength) {
@@ -49,11 +49,11 @@
 			while (pos < len) {
 				chunks.push(string.slice(pos, pos += splitLength))
 			}
-			return chunks
+			return chunks;
 		}
 
 		function getDuration(bstring) {
-			var framerate = hexdec(str_split(bin2hex(bstring.substring(32, 36)), 2).reverse().join(''))/1000000;
+			var framerate = bindec(bstring.substring(32, 36).split("").reverse().join(""))/1000000;
 			var frames = hexdec(str_split(bin2hex(bstring.substring(48, 52)), 2).reverse().join(''));
 
 			return Math.ceil(framerate * frames);
@@ -78,7 +78,7 @@
 				e.preventDefault();
 				e.stopPropagation();
 
-				var dropped_files = e.originalEvent.dataTransfer.files;
+				var dropped_files = e.dataTransfer.files;
 
 				if(dropped_files[0].type == 'video/avi' || dropped_files[0].type == 'video/x-msvideo') {
 					var fileReader = new FileReader();
